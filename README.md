@@ -1,33 +1,26 @@
-# Quotes Generator – ReactVite Web Application
+# Quotes Generator – Next.js, React, TypeScript, TheQuote API, TailwindCSS, Framer Motion Fundamental Project 8
+
+A modern, interactive web application built with React and Vite. The app fetches random quotes from the [TheQuote API](https://thequoteapi.com/), displaying them with author details. Users can generate new quotes, mark favorites, and manage their favorite list. The project is designed as a learning tool for React, Vite, API integration, and environmental configuration, with clean code and clear separation of concerns.
+
+- **Live Demo:** [https://quotes-builder.vercel.app/](https://quotes-builder.vercel.app/)
 
 ![Screenshot 2024-09-27 at 16 11 17](https://github.com/user-attachments/assets/c7a80594-06b6-4ecf-9525-309facd20151) ![Screenshot 2024-09-27 at 16 11 30](https://github.com/user-attachments/assets/b73ddaf7-7850-4df5-91b7-a55c20430beb)
-
----
-
-## Project Summary
-
-**Quotes-Generator--React** is a modern, interactive web application built with React and Vite. The app fetches random quotes from the [TheQuote API](https://thequoteapi.com/), displaying them with author details. Users can generate new quotes, mark favorites, and manage their favorite list. The project is designed as a learning tool for React, Vite, API integration, and environmental configuration, with clean code and clear separation of concerns.
-
-- **Live-Demo:** [https://quotes-arnob.vercel.app/](https://quotes-arnob.vercel.app/)
-
----
 
 ## Table of Contents
 
 1. [Project Summary](#project-summary)
 2. [Features](#features)
-3. [Live Demo](#live-demo)
-4. [Technology Stack](#technology-stack)
-5. [Project Structure](#project-structure)
-6. [Setup & Installation](#setup--installation)
-7. [Environment Variables](#environment-variables)
-8. [API Usage](#api-usage)
-9. [Functionality & Walkthrough](#functionality--walkthrough)
-10. [Component Overview](#component-overview)
-11. [Example Code Scripts](#example-code-scripts)
-12. [Keywords](#keywords)
-13. [Learning & Teaching](#learning--teaching)
-14. [Conclusion](#conclusion)
+3. [Technology Stack](#technology-stack)
+4. [Project Structure](#project-structure)
+5. [Setup & Installation](#setup--installation)
+6. [Environment Variables](#environment-variables)
+7. [API Usage](#api-usage)
+8. [Functionality & Walkthrough](#functionality--walkthrough)
+9. [Component Overview](#component-overview)
+10. [Example Code Scripts](#example-code-scripts)
+11. [Keywords](#keywords)
+12. [Learning & Teaching](#learning--teaching)
+13. [Conclusion](#conclusion)
 
 ---
 
@@ -72,7 +65,7 @@ Quotes-Generator--React/
     └── styles/          # CSS or SCSS files
 ```
 
-*Note: The actual file structure may contain further subdirectories for better organization.*
+_Note: The actual file structure may contain further subdirectories for better organization._
 
 ---
 
@@ -117,6 +110,7 @@ VITE_QUOTE_API_KEY=your_api_key_here
 You can obtain your API key from [TheQuote API](https://thequoteapi.com/) by submitting your email.
 
 ---
+
 ## API Usage
 
 This project uses [TheQuote API](https://thequoteapi.com/) to fetch random quotes.
@@ -150,7 +144,7 @@ This project uses [TheQuote API](https://thequoteapi.com/) to fetch random quote
 
 ## Component Overview
 
-*Typical components in the project (assuming best practices):*
+_Typical components in the project (assuming best practices):_
 
 - **App.jsx**: Main component managing state and routing.
 - **QuoteCard.jsx**: Displays the current quote.
@@ -162,7 +156,9 @@ This project uses [TheQuote API](https://thequoteapi.com/) to fetch random quote
 ```jsx
 // Example: Fetching a random quote
 const fetchQuote = async () => {
-  const res = await fetch(`https://thequoteapi.com/api/random?api_key=${process.env.VITE_QUOTE_API_KEY}`);
+  const res = await fetch(
+    `https://thequoteapi.com/api/random?api_key=${process.env.VITE_QUOTE_API_KEY}`,
+  );
   const data = await res.json();
   setQuote(data);
 };
@@ -175,7 +171,7 @@ const fetchQuote = async () => {
 ### Fetching and Displaying a Quote
 
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function QuoteCard() {
   const [quote, setQuote] = useState(null);
@@ -185,6 +181,10 @@ function QuoteCard() {
   }, []);
 
   async function fetchRandomQuote() {
+    const res = await fetch(
+      "https://thequoteapi.com/api/random?api_key=" +
+        import.meta.env.VITE_QUOTE_API_KEY,
+
     const res = await fetch('https://thequoteapi.com/api/random?api_key=' + import.meta.env.VITE_QUOTE_API_KEY);
     const data = await res.json();
     setQuote(data);
