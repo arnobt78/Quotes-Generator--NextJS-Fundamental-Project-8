@@ -23,8 +23,7 @@ function truncateQuote(text: string, maxLen: number): string {
  * Uses custom hooks (useQuote) and Context (useFavorites) for a clean separation of concerns.
  */
 export default function HomePage() {
-  const apiKey =
-    process.env.NEXT_PUBLIC_QUOTE_API_KEY ?? "";
+  const apiKey = process.env.NEXT_PUBLIC_QUOTE_API_KEY ?? "";
   const handleQuoteSuccess = useCallback((q: Quote) => {
     const short = truncateQuote(q.text, 48);
     toast.success("New quote loaded", {
@@ -51,26 +50,72 @@ export default function HomePage() {
     });
   };
 
+  const mainCardContent = showFavorites ? (
+    <FavoritesList
+      key="favorites"
+      favorites={favorites}
+      onClose={() => setShowFavorites(false)}
+      onRemove={removeFavorite}
+    />
+  ) : (
+    <motion.div
+      key="main"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="relative z-10 flex flex-col flex-1 min-h-0"
+    >
+      <div className="flex-1 flex items-center justify-center relative">
+        <QuoteCard quote={quote} loading={loading} />
+        {error ? (
+          <p className="absolute bottom-20 left-1/2 -translate-x-1/2 text-red-400 text-sm font-body">
+            {error}
+          </p>
+        ) : null}
+      </div>
+      <div className="shrink-0 pt-4 flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 pb-2">
+        <Button
+          variant="primary"
+          onClick={fetchNewQuote}
+          loading={loading}
+          disabled={loading}
+        >
+          <RefreshCw className="w-5 h-5" aria-hidden />
+          New Quote
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={handleAddToFavorites}
+          disabled={loading}
+        >
+          <BookMarked className="w-5 h-5" aria-hidden />
+          Add to Favorites
+        </Button>
+      </div>
+    </motion.div>
+  );
+
   return (
     <div className="w-full flex flex-col items-center justify-center py-8 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full max-w-[90vmin] aspect-[3/2] sm:aspect-[3/2] bg-neutral-800 rounded-[3rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden"
+        className="w-full max-h-[70vh] aspect-[3/2] bg-neutral-800 rounded-[3rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden flex flex-col"
       >
-        <h1 className="font-display text-5xl sm:text-6xl text-gray-300 select-none">
-          Quote.
-        </h1>
-
-        <RippleButton
-          type="button"
-          onClick={() => setShowFavorites(!showFavorites)}
-          className="absolute top-12 right-12 p-1 rounded-full text-teal-400 hover:text-teal-300 hover:bg-white/5 transition-colors"
-          aria-label={showFavorites ? "Close favorites" : "Open favorites"}
-        >
-          <Heart className="w-10 h-10 sm:w-12 sm:h-12" aria-hidden />
-        </RippleButton>
+        <div className="flex justify-between items-start shrink-0">
+          <h1 className="font-display text-5xl sm:text-6xl text-gray-300 select-none">
+            Quote.
+          </h1>
+          <RippleButton
+            type="button"
+            onClick={() => setShowFavorites(!showFavorites)}
+            className="p-1 rounded-full text-teal-400 hover:text-teal-300 hover:bg-white/5 transition-colors shrink-0"
+            aria-label={showFavorites ? "Close favorites" : "Open favorites"}
+          >
+            <Heart className="w-10 h-10 sm:w-12 sm:h-12" aria-hidden />
+          </RippleButton>
+        </div>
 
         {/* Decorative circles (same as original design) */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -80,50 +125,7 @@ export default function HomePage() {
           <div className="absolute w-4 h-4 bg-gradient-to-l from-red-500 to-rose-400 rounded-full top-[30%] left-[20%]" />
         </div>
 
-        <AnimatePresence mode="wait">
-          {showFavorites ? (
-            <FavoritesList
-              key="favorites"
-              favorites={favorites}
-              onClose={() => setShowFavorites(false)}
-              onRemove={removeFavorite}
-            />
-          ) : (
-            <motion.div
-              key="main"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="relative z-10"
-            >
-              <QuoteCard quote={quote} loading={loading} />
-              {error && (
-                <p className="absolute bottom-28 left-1/2 -translate-x-1/2 text-red-400 text-sm font-body">
-                  {error}
-                </p>
-              )}
-              <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col sm:flex-row gap-6 sm:gap-8">
-                <Button
-                  variant="primary"
-                  onClick={fetchNewQuote}
-                  loading={loading}
-                  disabled={loading}
-                >
-                  <RefreshCw className="w-5 h-5" aria-hidden />
-                  New Quote
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={handleAddToFavorites}
-                  disabled={loading}
-                >
-                  <BookMarked className="w-5 h-5" aria-hidden />
-                  Add to Favorites
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <AnimatePresence mode="wait">{mainCardContent}</AnimatePresence>
       </motion.div>
 
       <EducationalSection />

@@ -18,7 +18,7 @@ export function QuoteCard({ quote, loading }: QuoteCardProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 max-w-2xl min-w-[16rem]"
+      className="flex flex-col gap-4 max-w-2xl min-w-[16rem] w-full text-center"
     >
       <span
         className="text-4xl text-gray-300 font-body"
@@ -40,14 +40,11 @@ export function QuoteCard({ quote, loading }: QuoteCardProps) {
       {loading ? (
         <div className="h-4 bg-gray-600/50 rounded animate-pulse w-32 ml-auto" aria-hidden />
       ) : (
-        <p className="font-accent text-right text-gray-500 text-sm sm:text-base">
+        <p className="font-accent text-gray-500 text-sm sm:text-base">
           — {quote.author}
         </p>
       )}
-      <span
-        className="text-4xl text-gray-300 font-body text-right"
-        aria-hidden
-      >
+      <span className="text-4xl text-gray-300 font-body block" aria-hidden>
         &rdquo;
       </span>
     </motion.div>

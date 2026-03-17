@@ -23,7 +23,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const base =
-    "w-full sm:w-72 h-14 rounded-full border-none font-body text-sm font-bold uppercase tracking-wider text-white cursor-pointer shadow-lg transition-transform active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
+    "w-full sm:w-72 h-14 rounded-full border-none font-body text-sm font-bold uppercase tracking-wider text-white cursor-pointer shadow-xl transition-transform active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
   const variants = {
     primary:
       "bg-gradient-to-l from-indigo-500 to-indigo-400 hover:from-indigo-600 hover:to-indigo-500",
