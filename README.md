@@ -11,7 +11,8 @@ A modern, interactive quotes application built with Next.js, React, TypeScript, 
 
 - **Live Demo:** [https://quotes-builder.vercel.app/](https://quotes-builder.vercel.app/)
 
-<img width="1852" height="946" alt="Image" src="https://github.com/user-attachments/assets/a9c51c54-dfcf-4d50-b0d7-d57fbdabd043" /> <img width="1760" height="737" alt="Image" src="https://github.com/user-attachments/assets/2211e321-f485-408f-9186-7ff8bd9768ad" />
+![Screenshot 1](https://github.com/user-attachments/assets/a9c51c54-dfcf-4d50-b0d7-d57fbdabd043)
+![Screenshot 2](https://github.com/user-attachments/assets/2211e321-f485-408f-9186-7ff8bd9768ad)
 
 ## Table of Contents
 
