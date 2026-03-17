@@ -3,6 +3,7 @@
 import { BookOpen, Zap, Code, Server, Share2, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 
+/* Framer Motion: list items fade in one after another (staggerChildren) */
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -23,7 +24,7 @@ const quickTips = [
 ];
 
 /**
- * Short educational block for beginners: explains React concepts used in this app.
+ * Educational block below the card: State, Hooks, API, Context, and quick tips for learners.
  */
 export function EducationalSection() {
   return (
@@ -43,6 +44,7 @@ export function EducationalSection() {
         animate="show"
         className="font-body text-gray-700 text-sm sm:text-base space-y-2 list-none pl-0"
       >
+        {/* Each li animates with variants.item (staggered by container) */}
         <motion.li variants={item} className="flex items-start gap-2">
           <Zap
             className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"

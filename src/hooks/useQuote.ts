@@ -4,14 +4,15 @@ import { useCallback, useState } from "react";
 import { fetchRandomQuote } from "@/lib/api/quote";
 import type { Quote } from "@/types/quote";
 
+/** Shown before first API call; keeps UI from being empty */
 const DEFAULT_QUOTE: Quote = {
   text: "Ask not what your country can do for you; ask what you can do for your country",
   author: "John Kennedy",
 };
 
 /**
- * Hook to manage current quote and loading/error state.
- * Demonstrates custom hook pattern for reusable state + API logic.
+ * Custom hook: current quote, loading, error, and fetchNewQuote.
+ * onSuccess callback (e.g. toast) runs after a successful fetch.
  */
 export function useQuote(
   apiKey: string,

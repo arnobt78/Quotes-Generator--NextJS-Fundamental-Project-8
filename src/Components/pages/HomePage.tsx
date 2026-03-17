@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, RefreshCw, BookMarked } from "lucide-react";
 import { toast } from "sonner";
@@ -8,11 +8,13 @@ import { useQuote } from "@/hooks/useQuote";
 import { useFavorites } from "@/context/FavoritesContext";
 import { QuoteCard } from "@/Components/QuoteCard";
 import { FavoritesList } from "@/Components/FavoritesList";
+import { FloatingBalloons } from "@/Components/FloatingBalloons";
 import { Button } from "@/Components/ui/Button";
 import { RippleButton } from "@/Components/ui/RippleButton";
 import { EducationalSection } from "@/Components/EducationalSection";
 import type { Quote } from "@/types/quote";
 
+/** Shorten quote text for toast descriptions; adds "..." when over maxLen */
 function truncateQuote(text: string, maxLen: number): string {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen - 3).trim() + "...";
@@ -20,10 +22,11 @@ function truncateQuote(text: string, maxLen: number): string {
 
 /**
  * Home page (CSR): all quote and favorites state lives here.
- * Uses custom hooks (useQuote) and Context (useFavorites) for a clean separation of concerns.
+ * Uses useQuote (custom hook) and useFavorites (Context) for separation of concerns.
  */
 export default function HomePage() {
   const apiKey = process.env.NEXT_PUBLIC_QUOTE_API_KEY ?? "";
+  /** Toast when a new quote is successfully loaded */
   const handleQuoteSuccess = useCallback((q: Quote) => {
     const short = truncateQuote(q.text, 48);
     toast.success("New quote loaded", {
@@ -36,7 +39,10 @@ export default function HomePage() {
   const { favorites, addFavorite, removeFavorite, isInFavorites } =
     useFavorites();
   const [showFavorites, setShowFavorites] = useState(false);
+  /** Passed to FloatingBalloons for mouse position (repel + wind) */
+  const cardRef = useRef<HTMLDivElement>(null);
 
+  /** Add current quote to favorites and show toast; or "Already in favorites" if duplicate */
   const handleAddToFavorites = () => {
     if (isInFavorites(quote)) {
       toast.info("Already in favorites", {
@@ -50,6 +56,7 @@ export default function HomePage() {
     });
   };
 
+  /** Either the favorites panel or the main quote + buttons; AnimatePresence switches between them */
   const mainCardContent = showFavorites ? (
     <FavoritesList
       key="favorites"
@@ -97,11 +104,13 @@ export default function HomePage() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center py-8 px-4">
+      {/* Main card: gradient background, title, heart, balloons, and mainCardContent */}
       <motion.div
+        ref={cardRef}
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full max-h-[70vh] aspect-[3/2] bg-neutral-800 rounded-[3rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden flex flex-col"
+        className="w-full max-h-[70vh] aspect-[3/2] rounded-[3rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden flex flex-col bg-gradient-to-br from-neutral-950/90 via-neutral-800/90 to-neutral-950/90 backdrop-blur-xs"
       >
         <div className="flex justify-between items-start shrink-0">
           <h1 className="font-display text-5xl sm:text-6xl text-gray-300 select-none">
@@ -117,13 +126,8 @@ export default function HomePage() {
           </RippleButton>
         </div>
 
-        {/* Decorative circles (same as original design) */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute w-24 sm:w-40 h-24 sm:h-40 bg-gradient-to-t from-amber-400 to-amber-200 rounded-full -top-8 left-1/2 -translate-x-1/2" />
-          <div className="absolute w-8 sm:w-12 h-8 sm:h-12 bg-gradient-to-t from-amber-400 to-amber-200 rounded-full bottom-40 left-20" />
-          <div className="absolute w-24 sm:w-40 h-24 sm:h-40 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-full top-1/2 -translate-y-1/2 -right-8" />
-          <div className="absolute w-4 h-4 bg-gradient-to-l from-red-500 to-rose-400 rounded-full top-[30%] left-[20%]" />
-        </div>
+        {/* Decorative balloons: wander + mouse repel/wind; need cardRef for mousemove */}
+        <FloatingBalloons cardRef={cardRef} />
 
         <AnimatePresence mode="wait">{mainCardContent}</AnimatePresence>
       </motion.div>

@@ -4,7 +4,8 @@ const QUOTE_API_URL = "https://thequoteapi.com/api/quotes/random/";
 
 /**
  * Fetches a random quote from TheQuote API.
- * Requires NEXT_PUBLIC_QUOTE_API_KEY in env (used client-side).
+ * Auth: api_key header (from NEXT_PUBLIC_QUOTE_API_KEY; used client-side).
+ * Throws on non-ok response so callers can show error state.
  */
 export async function fetchRandomQuote(apiKey: string): Promise<Quote> {
   const response = await fetch(QUOTE_API_URL, {

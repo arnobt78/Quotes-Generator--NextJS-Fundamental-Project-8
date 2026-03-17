@@ -14,6 +14,10 @@ interface RippleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
+/**
+ * Button that shows a ripple effect at click position. Uses Tailwind animate-ripple (see tailwind.config).
+ * Used by Button component and by icon-only buttons (heart, close, trash).
+ */
 export function RippleButton({
   children,
   className = "",
@@ -33,6 +37,7 @@ export function RippleButton({
       const button = buttonRef.current;
       if (!button || disabled) return;
 
+      /* Ripple at click position (relative to button) */
       const rect = button.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -58,6 +63,7 @@ export function RippleButton({
       {...rest}
     >
       {children}
+      {/* Each ripple: expands from (x,y), then removed after 600ms */}
       {ripples.map(({ x, y, id }) => (
         <span
           key={id}

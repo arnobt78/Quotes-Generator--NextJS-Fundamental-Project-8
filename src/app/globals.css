@@ -2,13 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Base styles: applied to html/body and all elements ─── */
+/* Hero background in critical CSS avoids a visible flash (e.g. yellow) before image loads */
 @layer base {
   html {
     @apply box-border;
+  }
+  body {
+    background-color: #e8f0e8;
+    background-image: url("/hero2.avif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   *,
   *::before,
   *::after {
     @apply box-border;
   }
+}
+
+/* ─── Favorites panel scrollbar: transparent track, darker green thumb ─── */
+.scrollbar-favorites {
+  scrollbar-color: rgb(17 94 89) transparent;
+  scrollbar-width: thin;
+}
+.scrollbar-favorites::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-favorites::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-favorites::-webkit-scrollbar-thumb {
+  background: rgb(17 94 89);
+  border-radius: 4px;
+}
+.scrollbar-favorites::-webkit-scrollbar-thumb:hover {
+  background: rgb(15 118 110);
 }

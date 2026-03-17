@@ -1,8 +1,9 @@
 import HomePage from "@/Components/pages/HomePage";
 
 /**
- * SSR page: only renders the client page component.
- * All state and data fetching live in HomePage (CSR) for clear separation.
+ * App Router home page (SSR).
+ * Renders only the client HomePage component; all quote/favorites state and
+ * API calls live in HomePage so this route stays server-rendered and fast.
  */
 export default function Page() {
   return <HomePage />;

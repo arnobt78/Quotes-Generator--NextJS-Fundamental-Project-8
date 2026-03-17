@@ -9,8 +9,8 @@ interface QuoteCardProps {
 }
 
 /**
- * Displays a single quote with decorative quote icons.
- * When loading, shows skeleton lines (animate-pulse). Uses Framer Motion for entrance animation.
+ * Displays a single quote with decorative “ ” marks.
+ * When loading: skeleton lines (Tailwind animate-pulse). Entrance: Framer Motion.
  */
 export function QuoteCard({ quote, loading }: QuoteCardProps) {
   return (
@@ -18,12 +18,10 @@ export function QuoteCard({ quote, loading }: QuoteCardProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex flex-col gap-4 max-w-2xl min-w-[16rem] w-full text-center"
+      className="flex flex-col gap-4 max-w-2xl min-w-[16rem] w-full"
     >
-      <span
-        className="text-4xl text-gray-300 font-body"
-        aria-hidden
-      >
+      {/* Opening quote mark – left-aligned */}
+      <span className="text-4xl text-gray-300 font-body text-left" aria-hidden>
         &ldquo;
       </span>
       {loading ? (
@@ -40,11 +38,12 @@ export function QuoteCard({ quote, loading }: QuoteCardProps) {
       {loading ? (
         <div className="h-4 bg-gray-600/50 rounded animate-pulse w-32 ml-auto" aria-hidden />
       ) : (
-        <p className="font-accent text-gray-500 text-sm sm:text-base">
+        <p className="font-accent text-gray-500 text-sm sm:text-base text-right">
           — {quote.author}
         </p>
       )}
-      <span className="text-4xl text-gray-300 font-body block" aria-hidden>
+      {/* Closing quote mark – right-aligned to match author */}
+      <span className="text-4xl text-gray-300 font-body text-right block" aria-hidden>
         &rdquo;
       </span>
     </motion.div>

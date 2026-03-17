@@ -10,6 +10,7 @@ import {
 } from "react";
 import type { Quote } from "@/types/quote";
 
+/** Shape of the context value consumed by useFavorites() */
 interface FavoritesContextValue {
   favorites: Quote[];
   addFavorite: (quote: Quote) => void;
@@ -25,11 +26,12 @@ interface FavoritesProviderProps {
 
 /**
  * Provides favorites list and add/remove actions to the tree.
- * Example of React Context API for shared state without prop drilling.
+ * Wrap the app (or a subtree) so any component can call useFavorites() without prop drilling.
  */
 export function FavoritesProvider({ children }: FavoritesProviderProps) {
   const [favorites, setFavorites] = useState<Quote[]>([]);
 
+  /** Add quote if not already in list (match by text + author) */
   const addFavorite = useCallback((quote: Quote) => {
     setFavorites((prev) => {
       const exists = prev.some(
@@ -40,10 +42,12 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     });
   }, []);
 
+  /** Remove by array index */
   const removeFavorite = useCallback((index: number) => {
     setFavorites((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
+  /** Check if a quote is already in favorites (for "Already in favorites" toast) */
   const isInFavorites = useCallback(
     (quote: Quote) =>
       favorites.some(
@@ -69,6 +73,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
   );
 }
 
+/** Hook: use only inside a tree wrapped by FavoritesProvider */
 export function useFavorites(): FavoritesContextValue {
   const ctx = useContext(FavoritesContext);
   if (!ctx) {

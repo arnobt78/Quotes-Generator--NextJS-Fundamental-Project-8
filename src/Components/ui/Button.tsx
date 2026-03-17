@@ -11,8 +11,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /**
- * Reusable button with ripple; supports primary (purple) and secondary (teal) variants.
- * When loading, shows spinner and "Generating..." and is disabled.
+ * Reusable button built on RippleButton: primary (indigo) or secondary (teal).
+ * When loading, shows Loader2 spinner + "Generating…" and is disabled.
  */
 export function Button({
   variant = "primary",
@@ -36,6 +36,7 @@ export function Button({
       disabled={disabled ?? loading}
       {...props}
     >
+      {/* Loading state: spinner + text; otherwise show children (e.g. "New Quote") */}
       {loading ? (
         <>
           <Loader2 className="h-5 w-5 animate-spin" aria-hidden />

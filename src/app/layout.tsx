@@ -5,6 +5,8 @@ import { Footer } from "@/Components/Footer";
 import { SonnerToaster } from "@/Components/ui/SonnerToaster";
 import "./globals.css";
 
+/* ─── Root layout: fonts, metadata (SEO), global structure ─── */
+/* Google Fonts via next/font: optimized loading, no layout shift */
 const bebas = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
@@ -24,6 +26,7 @@ const pacifico = Pacifico({
 
 const siteUrl = "https://quotes-builder.vercel.app";
 
+/** SEO: title, description, OpenGraph, Twitter cards, robots */
 export const metadata: Metadata = {
   title: {
     default:
@@ -84,6 +87,7 @@ export const metadata: Metadata = {
   },
 };
 
+/** Root layout: wraps all pages; provides fonts, providers, and main shell */
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -94,17 +98,19 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className="font-body antialiased min-h-screen bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 relative"
+        className="font-body antialiased min-h-screen relative"
         suppressHydrationWarning
       >
+        {/* Screen overlay: darker top/bottom for background; pointer-events-none so clicks pass through */}
         <div
-          className="fixed inset-0 bg-no-repeat bg-center bg-cover opacity-90 pointer-events-none"
-          style={{ backgroundImage: "url('/hero2.avif')" }}
+          className="fixed inset-0 z-[1] pointer-events-none bg-gradient-to-b from-black/25 via-transparent to-black/25"
           aria-hidden
         />
+        {/* Toast notifications (Sonner) – e.g. "Added to favorites" */}
         <SonnerToaster />
         <div className="relative z-10 w-full max-w-9xl mx-auto px-4 sm:px-6 min-h-screen flex flex-col">
           <div className="flex-1 flex flex-col items-center justify-center">
+            {/* FavoritesProvider: any child can use useFavorites() to read/add/remove favorites */}
             <FavoritesProvider>{children}</FavoritesProvider>
           </div>
           <Footer />
